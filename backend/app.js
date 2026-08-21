@@ -1,6 +1,6 @@
 import express from 'express';
 import alunosRoutes from './routes/alunosRoutes.js';
-import connectDB from './config/db.js';
+import connectDB from './config/database.js';
 
 connectDB();
 

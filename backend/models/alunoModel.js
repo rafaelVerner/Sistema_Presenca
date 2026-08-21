@@ -8,11 +8,7 @@ const alunoSchema = new mongoose.Schema(
         senha: String,
         idade: Number,
         responsavel: String,
-        curso: String,
-        vouchers: [{
-            codigo: String,
-            usado: Boolean
-        }]
+        curso: String
     }
 )
 

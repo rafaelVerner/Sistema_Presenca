@@ -9,9 +9,18 @@ const alunosController = {
             ]
         })
     },
-    createAluno: function(req,res){
-        const aluno = req.body;
-        res.send({message:"Aluno cadastrado com sucesso", aluno, status: 201, body: req.body});
+    createAluno: async function(req,res){
+        try{
+            const aluno = req.body;
+            const novoAluno = new alunoModel(aluno);
+            await novoAluno.save();
+            console.log("Aluno cadastrado com sucesso", novoAluno);
+            res.status(201).send({message:"Aluno cadastrado com sucesso", aluno: novoAluno});
+        }catch(error){
+            res.status(500).send({message:"Erro ao cadastrar aluno", error: error.message});
+        }
+        
+        
     },
     deleteAluno: function(req, res){
         const id = req.params.id;
