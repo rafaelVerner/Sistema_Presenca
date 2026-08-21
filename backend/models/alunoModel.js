@@ -4,9 +4,15 @@ const alunoSchema = new mongoose.Schema(
     {
         nome: String,
         codigo: Number,
+        login: String,
+        senha: String,
         idade: Number,
         responsavel: String,
-        curso: String
+        curso: String,
+        vouchers: [{
+            codigo: String,
+            usado: Boolean
+        }]
     }
 )
 
