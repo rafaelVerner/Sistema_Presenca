@@ -1,20 +1,19 @@
 import alunoModel from '../models/alunoModel.js';
 
 const alunosController = {
-    getAlunos: function(req, res) {
-        res.send({message:"Lista de alunos",
-            listaAlunos:[
-                { id: 1, nome:"Verner"},
-                {id: 2, nome:"Anderson"}
-            ]
-        })
+    getAlunos: async function(req, res) {
+        try{
+            const alunos = await alunoModel.find();
+            res.status(200).send({message:"Alunos encontrados com sucesso", alunos: alunos});
+        }catch(error){
+            res.status(500).send({messae:"Erro ao buscar alunos", error: error.message});
+        }
     },
     createAluno: async function(req,res){
         try{
             const aluno = req.body;
             const novoAluno = new alunoModel(aluno);
             await novoAluno.save();
-            console.log("Aluno cadastrado com sucesso", novoAluno);
             res.status(201).send({message:"Aluno cadastrado com sucesso", aluno: novoAluno});
         }catch(error){
             res.status(500).send({message:"Erro ao cadastrar aluno", error: error.message});
@@ -22,18 +21,36 @@ const alunosController = {
         
         
     },
-    deleteAluno: function(req, res){
-        const id = req.params.id;
-        res.send({message:"Aluno deletado com sucesso", id, status: 200});
+    deleteAluno: async function(req, res){
+        try{
+            const id = req.params.id;
+            await alunoModel.findByIdAndDelete(id);
+            res.status(200).send({message: "Aluno deletado com sucesso", id});
+        }catch (error){
+            res.status(500).send({message: "Erro ao deletar aluno", error: error.message});
+        }
     },
-    getAlunoById: function(req, res){
-        const id = req.params.id;
-        res.send({message: "Aluno encontrado com sucesso", id, status: 200, body: req.body});
+    getAlunoById: async function(req, res){
+        try{
+            const id = req.params.id;
+            const aluno = await alunoModel.findById(id);
+            res.status(200).send({message: "Aluno encontrado com sucesso", aluno});
+
+        }catch(error){
+            res.status(500).send({message:"Erro ao buscar aluno", error: error.message});
+        }
     }, 
-    updateAluno: function(req, res){
-        const id = req.params.id;
-        const aluno = req.body;
-        res.send({message: "Aluno atualizado com sucesso", id, aluno, status: 200, body: req.body});
+    updateAluno: async function(req, res){
+        try{
+            const id = req.params.id;
+            const aluno = req.body;
+            await alunoModel.findByIdAndUpdate(id, aluno);
+            res.status(200).send({messae: "Aluno atualizado com sucesso", aluno});
+        }catch(error){
+            res.status(500).send({message: "Erro ao atualizar aluno", error: error.message});
+        }
+        
+        
     }
 
 }
