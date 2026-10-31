@@ -7,9 +7,10 @@ const alunoSchema = new mongoose.Schema(
         login: String,
         senha: String,
         idade: Number,
-        responsavel: String,
-        curso: String
-    }
+        responsavel: {type: mongoose.Schema.Types.ObjectId, ref: "Responsavel"},
+        curso: {type: mongoose.Schema.Types.ObjectId, ref: "Curso", required: true},
+    },
+    {timestamps: true}
 )
 
 
